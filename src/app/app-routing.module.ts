@@ -3,7 +3,7 @@ import {Router, RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {LoginComponent} from './auth/login/login.component';
 import {RegisterComponent} from './auth/register/register.component';
-import {NopagesfoundComponent} from './pages/nopagesfound/nopagesfound.component';
+import {NopagesfoundComponent} from './nopagesfound/nopagesfound.component';
 import {ProgressComponent} from './pages/progress/progress.component';
 import {Graphic1Component} from './pages/graphic1/graphic1.component';
 import {PagesComponent} from './pages/pages.component';
