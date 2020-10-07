@@ -6,6 +6,8 @@ import { NopagesfoundComponent } from './nopagesfound/nopagesfound.component';
 import { AppComponent } from './app.component';
 
 import {APP_ROUTING} from './app-routing.module';
+import {PagesRoutingModule} from './pages/pages.routing';
+import {AuthRoutingModule} from './auth/auth.routing';
 import {PagesModule} from './pages/pages.module';
 import {AuthModule} from './auth/auth.module';
 
@@ -16,7 +18,7 @@ import {AuthModule} from './auth/auth.module';
     NopagesfoundComponent,
   ],
   imports: [
-    BrowserModule, APP_ROUTING, PagesModule, AuthModule,
+    BrowserModule, APP_ROUTING, PagesRoutingModule, AuthRoutingModule, PagesModule, AuthModule
     // RouterModule
   ],
   providers: [],
