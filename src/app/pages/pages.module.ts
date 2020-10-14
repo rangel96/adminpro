@@ -7,6 +7,8 @@ import {ProgressComponent} from './progress/progress.component';
 import {Graphic1Component} from './graphic1/graphic1.component';
 import {PagesComponent} from './pages.component';
 import {SharedModule} from '../shared/shared.module';
+import {FormsModule} from '@angular/forms';
+import {IncrementalComponent} from '../components/incremental/incremental.component';
 
 
 
@@ -15,7 +17,8 @@ import {SharedModule} from '../shared/shared.module';
     DashboardComponent,
     ProgressComponent,
     Graphic1Component,
-    PagesComponent
+    PagesComponent,
+    IncrementalComponent
   ],
   exports: [
     DashboardComponent,
@@ -23,8 +26,8 @@ import {SharedModule} from '../shared/shared.module';
     Graphic1Component,
     PagesComponent
   ],
-  imports: [
-    CommonModule, SharedModule, APP_ROUTING
-  ]
+    imports: [
+        CommonModule, SharedModule, APP_ROUTING, FormsModule
+    ]
 })
 export class PagesModule { }
