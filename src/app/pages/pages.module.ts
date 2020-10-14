@@ -9,6 +9,7 @@ import {PagesComponent} from './pages.component';
 import {SharedModule} from '../shared/shared.module';
 import {FormsModule} from '@angular/forms';
 import {IncrementalComponent} from '../components/incremental/incremental.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 
 
@@ -18,13 +19,15 @@ import {IncrementalComponent} from '../components/incremental/incremental.compon
     ProgressComponent,
     Graphic1Component,
     PagesComponent,
-    IncrementalComponent
+    IncrementalComponent,
+    AccountSettingsComponent
   ],
   exports: [
     DashboardComponent,
     ProgressComponent,
     Graphic1Component,
-    PagesComponent
+    PagesComponent,
+    AccountSettingsComponent
   ],
     imports: [
         CommonModule, SharedModule, APP_ROUTING, FormsModule

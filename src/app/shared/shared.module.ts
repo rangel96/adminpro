@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {BreadcrumbsComponent} from './breadcrumbs/breadcrumbs.component';
 import {HeadbarComponent} from './headbar/headbar.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
+import {PagesRoutingModule} from '../pages/pages.routing';
 
 
 
@@ -17,8 +18,9 @@ import {SidebarComponent} from './sidebar/sidebar.component';
     HeadbarComponent,
     SidebarComponent,
   ],
-  imports: [
-    CommonModule,
-  ]
+    imports: [
+        CommonModule,
+        PagesRoutingModule,
+    ]
 })
 export class SharedModule { }
