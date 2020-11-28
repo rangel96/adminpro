@@ -1,15 +1,20 @@
+// Module - Modulos a utilizar
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-// import {RouterModule} from '@angular/router';
 
+// Component - Componentes
 import { NopagesfoundComponent } from './nopagesfound/nopagesfound.component';
 import { AppComponent } from './app.component';
 
-import {APP_ROUTING} from './app-routing.module';
-import {PagesRoutingModule} from './pages/pages.routing';
-import {AuthRoutingModule} from './auth/auth.routing';
-import {PagesModule} from './pages/pages.module';
-import {AuthModule} from './auth/auth.module';
+// Routing - Rutas de los diferentes componentes
+import { APP_ROUTING } from './app-routing.module';
+import { PagesRoutingModule } from './pages/pages.routing';
+import { AuthRoutingModule } from './auth/auth.routing';
+import { PagesModule } from './pages/pages.module';
+import { AuthModule } from './auth/auth.module';
+
+// HttpClient para conectar a una REST API
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -18,10 +23,17 @@ import {AuthModule} from './auth/auth.module';
     NopagesfoundComponent,
   ],
   imports: [
-    BrowserModule, APP_ROUTING, PagesRoutingModule, AuthRoutingModule, PagesModule, AuthModule
+    BrowserModule,
+    HttpClientModule,
+    APP_ROUTING,
+    PagesRoutingModule,
+    AuthRoutingModule,
+    PagesModule,
+    AuthModule,
     // RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

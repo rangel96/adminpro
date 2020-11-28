@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
-import {APP_ROUTING} from '../app-routing.module';
+import { APP_ROUTING } from '../app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { CommonModule } from '@angular/common';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptorService } from '../services/authinterceptor.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,13 @@ import {RegisterComponent} from './register/register.component';
     RegisterComponent,
   ],
   imports: [
-    CommonModule, APP_ROUTING
-  ]
+    CommonModule, APP_ROUTING, HttpClientModule, FormsModule, ReactiveFormsModule
+  ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }]
 })
-export class AuthModule { }
+export class AuthModule {}
+
