@@ -10,10 +10,10 @@ const APP_ROUTES: Routes = [
   // { path: '**', pathMatch: 'full', redirectTo: 'nopagefound' } // Cuando no encuentra algo se redirecciona al Home
 ];
 
-export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, { useHash: true });
+export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, { useHash: true, relativeLinkResolution: 'legacy' });
 
 @NgModule({
-  imports: [RouterModule.forRoot(APP_ROUTES), PagesRoutingModule, AuthRoutingModule],
+  imports: [RouterModule.forRoot(APP_ROUTES, { relativeLinkResolution: 'legacy' }), PagesRoutingModule, AuthRoutingModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

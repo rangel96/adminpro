@@ -40,7 +40,7 @@ export interface AuthGoogleI {
 export interface InterfaceUsuario {
   status: boolean,
   msg: string,
-  data: [ UsuarioI, TokenI ]
+  data: [ usuario: UsuarioI, token: TokenI ]
 }
 
 export interface InterfaceUsuarios {
@@ -52,4 +52,3 @@ export interface InterfaceUsuarios {
 export interface TokenI {
   token: string;
 }
-

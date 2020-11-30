@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UsuariosService } from '../../services/usuarios.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TokenI, UsuarioI } from '../../interfaces/usuarios';
 
 @Component({
   selector: 'userForm',
@@ -10,6 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   // styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  private user: [UsuarioI, TokenI];
 
   createFormGroupo() {
     return new FormGroup({
@@ -38,34 +40,44 @@ export class LoginComponent {
   }
 
   // tslint:disable-next-line:typedef
+
   login() {
-      const userLogin = this.userForm.value;
-      this.usuariosSvc.login(userLogin).subscribe((authResponse) => {
+    const userLogin = this.userForm.value;
+    this.usuariosSvc.login(userLogin).subscribe((authResponse) => {
+      const usuario: UsuarioI = authResponse.data.usuario;
+      const token: TokenI = authResponse.data.token;
 
-        /*if (!authResponse.status ==false) {
-          // Si las constraseñas no coinciden mostramos un mensaje
-          document.getElementById('error').classList.add('mostrar');
-          console.log('logged no successfully! \n' + authResponse);
-          return false;
-        }*/
+      // Object Destructuring
+      // const { usuario: UsuarioI, token: TokenI } = authResponse.data;
 
-        // Si las contraseñas coinciden ocultamos el mensaje de error
-        document.getElementById('error').classList.remove('mostrar');
+      // validation of form
+      /*if (!authResponse.status ==false) {
+        // Si las constraseñas no coinciden mostramos un mensaje
+        document.getElementById('error').classList.add('mostrar');
+        console.log('logged no successfully! \n' + authResponse);
+        return false;
+      }*/
 
-        // Mostramos un mensaje mencionando que las Contraseñas coinciden
-        document.getElementById('ok').classList.remove('ocultar');
+      // Si las contraseñas coinciden ocultamos el mensaje de error
+      document.getElementById('error').classList.remove('mostrar');
 
-        // Refrescamos la página (Simulación de envío del formulario)
-        /*setTimeout(function() {
-          location.reload();
-        }, 3000);*/
+      // Mostramos un mensaje mencionando que las Contraseñas coinciden
+      document.getElementById('ok').classList.remove('ocultar');
 
-        // Mostramos un mensaje mencionando que las Contraseñas coinciden
-      /*  alert('Logged in successfully! \nWelcome ' + authResponse);*/
-        // console.log('logged in successfully! \nWelcome ' + authResponse.data.usuario.nombre);
-        // this.onResetForm();
-        return true;
-      });
+      // Refrescamos la página (Simulación de envío del formulario)
+      // OBTENER TOKEN | REDIRECCIONAR LA PAGINA AL DASHBOARD CON EL TOKEN
+      /*setTimeout(function() {
+        location.reload();
+      }, 3000);*/
+
+      // Mostramos un mensaje mencionando que las Contraseñas coinciden
+      // alert('Logged in successfully! \nWelcome ' + this.user.usuario.nombre);
+      // console.log('logged in successfully! \nWelcome ' + usuario.nombre);
+      console.log(token);
+      console.log(usuario.nombre);
+      // this.onResetForm();
+      return true;
+    });
 
   }
 
