@@ -5,6 +5,12 @@
 export const environment = {
   production: false,
 
+  // Base el URL del BackEnd
+  base_url: 'http://localhost:3000/api/',
+
+// Dependencias de GOOGLE
+  GOOGLE_CLIENT_ID: '740667955534-egpq3ic1rk3db6l25n09u1tbl2a6cb8n.apps.googleusercontent.com',
+  GOOGLE_CLIENT_SECRET: 'vmqz6eCFM-ls33KmV08ujHlj',
 };
 
 /*

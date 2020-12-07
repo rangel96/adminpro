@@ -16,7 +16,7 @@ export class LoginComponent {
   // Captutar los campos del formulario
   createFormGroupo() {
     return new FormGroup({
-      email: new FormControl(['usuario@example.com'], [Validators.required, Validators.email]),
+      email: new FormControl([''], [Validators.required, Validators.email]),
       password: new FormControl([''], [Validators.required]),
     });
   }
