@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { UsuariosI, UsuarioI, NewUsuarioI, AuthLocalI, AuthGoogleI, InterfaceUsuario, InterfaceUsuarios, TokenI } from '../interfaces/usuarios';
+import { UsuarioI, UsuarioTokenI } from '../interfaces/usuarios';
 import { Observable } from 'rxjs';
 import { TokenStoreService } from './security/token-store.service';
 
@@ -10,15 +10,14 @@ import { TokenStoreService } from './security/token-store.service';
 })
 export class UsuariosService {
   private urlAPI = 'http://localhost:3000/api/';
-  private urlExample = 'https://jsonplaceholder.typicode.com';
 
   constructor(private http: HttpClient, private tokenSvc: TokenStoreService) {
   }
 
   // GetAll Obtener todos los usuarios
-  getAllUsers(): Observable<UsuariosI[]> {
+  getAllUsers(): Observable<UsuarioI[]> {
     const path = this.urlAPI + 'usuarios/';
-    return this.http.get<UsuariosI[]>(path);
+    return this.http.get<UsuarioI[]>(path);
   }
 
   // GetbyID Obtener un usuario
@@ -28,15 +27,15 @@ export class UsuariosService {
   }
 
   // CreateUser Agregar un usuario DUDA****************************
-  addUser(newUser: NewUsuarioI): Observable<UsuarioI> {
+  addUser(newUser: UsuarioI): Observable<UsuarioTokenI> {
     const path = this.urlAPI + 'usuarios/';
-    return this.http.post<UsuariosI>(path, newUser);
+    return this.http.post<UsuarioTokenI>(path, newUser);
   }
 
   // UpdateUser Editar usuario DUDA****************************
   updateUser(user: UsuarioI): Observable<UsuarioI[]> {
     const path = this.urlAPI + 'usuarios/' + user.idUsuario;
-    return this.http.put<UsuariosI[]>(path, user);
+    return this.http.put<UsuarioI[]>(path, user);
   }
 
   // DeleteUser Elimina el usuario
@@ -45,7 +44,7 @@ export class UsuariosService {
     return this.http.delete(path);
   }
 
-  // Login native
+  // Login native with token
   /*login(userLogin: AuthLocalI) {
     const path = `${this.urlAPI}auth/login`;
     this.http.post<any>(path, userLogin).subscribe(res => {
@@ -53,16 +52,17 @@ export class UsuariosService {
     });
   }*/
 
-  login(userLogin: AuthLocalI): Observable<InterfaceUsuario> {
+  // Login native
+  login(userLogin: UsuarioI): Observable<UsuarioTokenI> {
     const path = `${this.urlAPI}auth/login`;
-    return this.http.post<any>(path, userLogin);
+    return this.http.post<UsuarioTokenI>(path, userLogin);
   }
 
   // Login Google
   // tslint:disable-next-line:typedef
-  googleLogin(token: AuthGoogleI) {
+  /*googleLogin(token: AuthGoogleI) {
     const path = `${this.urlAPI}auth/google`;
     return this.http.post(path, token);
-  }
+  }*/
 
 }

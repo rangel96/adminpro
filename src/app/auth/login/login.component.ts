@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsuariosService } from '../../services/usuarios.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TokenI, UsuarioI } from '../../interfaces/usuarios';
+import { Router } from '@angular/router';
+import { UsuarioI } from '../../interfaces/usuarios';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'userForm',
@@ -11,104 +13,135 @@ import { TokenI, UsuarioI } from '../../interfaces/usuarios';
   // styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  private user: [UsuarioI, TokenI];
-
+  // Captutar los campos del formulario
   createFormGroupo() {
     return new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
+      email: new FormControl(['usuario@example.com'], [Validators.required, Validators.email]),
+      password: new FormControl([''], [Validators.required]),
     });
   }
 
   userForm: FormGroup;
 
-  public getError(controlName: string): string {
-    let error = '';
-    const control = this.createFormGroupo().get(controlName);
-    if (control.touched && control.errors != null) {
-      error = JSON.stringify(control.errors);
-    }
-    return error;
-  }
-
-  constructor(private usuariosSvc: UsuariosService) {
+  constructor(private usuariosSvc: UsuariosService, private router: Router) {
     this.userForm = this.createFormGroupo();
   }
 
   onResetForm() {
+    // Limpiar el formulario
     this.userForm.reset();
+
+    // Cambiamos de pagina
+    this.router.navigateByUrl('/');
   }
 
   // tslint:disable-next-line:typedef
+  login() {// inicio metodo login
 
-  login() {
-    const userLogin = this.userForm.value;
-    this.usuariosSvc.login(userLogin).subscribe((authResponse) => {
-      const usuario: UsuarioI = authResponse.data.usuario;
-      const token: TokenI = authResponse.data.token;
+    // Capturamos el formulario y lo mandamos al metodo login del usuario service
+    this.usuariosSvc.login(this.userForm.value).subscribe((authResponse) => { // inicio usuarioSvc
+      // Si el status es true
+      if (authResponse.status) { // inicio del condiconal para authResponse
+        const usuario: UsuarioI = authResponse.data.usuario;
+        const token: string = authResponse.data.token;
 
-      // Object Destructuring
-      // const { usuario: UsuarioI, token: TokenI } = authResponse.data;
+        // console.log('AuthResponse: ' + authResponse);
+        console.log('Token: ' + token);
+        console.log('Nombre de usuario: ' + usuario.nombre);
 
-      // validation of form
-      /*if (!authResponse.status ==false) {
-        // Si las constraseñas no coinciden mostramos un mensaje
-        document.getElementById('error').classList.add('mostrar');
-        console.log('logged no successfully! \n' + authResponse);
-        return false;
-      }*/
+        // Mensaje de loging exitoso
+        Swal.fire({
+          icon: 'success',
+          title: authResponse.msg,
+          showConfirmButton: false,
+          timer: 1500
+        });
 
-      // Si las contraseñas coinciden ocultamos el mensaje de error
-      document.getElementById('error').classList.remove('mostrar');
+        //Regresamos el Body completo
+        // return authResponse;
 
-      // Mostramos un mensaje mencionando que las Contraseñas coinciden
-      document.getElementById('ok').classList.remove('ocultar');
+        // Limpiar formulario y cambiar de pagina
+        this.onResetForm();
 
-      // Refrescamos la página (Simulación de envío del formulario)
-      // OBTENER TOKEN | REDIRECCIONAR LA PAGINA AL DASHBOARD CON EL TOKEN
-      /*setTimeout(function() {
-        location.reload();
-      }, 3000);*/
+      }
+      // Si el status es false
+      else {
+        // Mensaje de login fallido
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: authResponse.msg,
+          showCancelButton: true,
+          confirmButtonText: 'Forgot pwd?',
+          cancelButtonText: 'Try again',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.forgotPassword();
+          }
+        });
 
-      // Mostramos un mensaje mencionando que las Contraseñas coinciden
-      // alert('Logged in successfully! \nWelcome ' + this.user.usuario.nombre);
-      // console.log('logged in successfully! \nWelcome ' + usuario.nombre);
-      console.log(token);
-      console.log(usuario.nombre);
-      // this.onResetForm();
-      return true;
+      } // fin del condiconal para authResponse
+    }); // fin usuarioSvc
+  } // fin metodo login
+
+  // Login with GOOGLE
+  onSignInGoogle() {
+    Swal.fire({
+      icon: 'info',
+      title: 'Oops...',
+      text: ' Botón desabilitado por el momento. Gracias por intentarlo ! cx ',
     });
-
   }
 
-  // tslint:disable-next-line:typedef
-  public googleLogin(userToken) {
-    this.usuariosSvc.googleLogin(userToken).subscribe((usuario) => {
-      console.log(usuario);
+  // Login with FaceBook
+  onSignInFaceBook() {
+    Swal.fire({
+      icon: 'info',
+      title: ' Oops... ',
+      text: ' Botón desabilitado por el momento. Gracias por intentarlo ! cx ',
     });
   }
 
-  onSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  forgotPassword() {
+    // Cambiamos de pagina
+    // this.router.navigateByUrl('/forgotpassword');
+    Swal.fire({ // inicio swal.fire
+      title: 'Forgot password?',
+      text: ' Ingresa el email... ',
+      input: 'text', // Cambiar a email
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      showLoaderOnConfirm: true,
+      preConfirm: (login) => {
+        return fetch(`//api.github.com/users/${login}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(response.statusText);
+            }
+            return response.json();
+          })
+          .catch(error => {
+            Swal.showValidationMessage(
+              `Email invalid: ${error}`
+            );
+          });
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: 'success',
+          title: `${result.value.login}'s avatar`,
+          imageUrl: result.value.avatar_url
+        });
+      }
 
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log('Token: ' + id_token);
-    this.googleLogin(id_token);
-  }
+    });// fin swal.fire
 
-  /* signOut() {
-     var auth2 = gapi.auth2.getAuthInstance();
-     auth2.signOut().then(function() {
-       console.log('User signed out.');
-     });
-   }*/
-
-  onSignInFb() {
-    alert('Botón desabilitado por el momento\nGracias por intentarlo\ncx');
   }
 
 }

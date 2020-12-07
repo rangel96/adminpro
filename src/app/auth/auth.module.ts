@@ -8,6 +8,7 @@ import { RegisterComponent } from './register/register.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptorService } from '../services/authinterceptor.service';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,13 +20,18 @@ import { AuthInterceptorService } from '../services/authinterceptor.service';
     RegisterComponent,
   ],
   imports: [
-    CommonModule, APP_ROUTING, HttpClientModule, FormsModule, ReactiveFormsModule
-  ],
+    CommonModule,
+    APP_ROUTING,
+    RouterModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
+  ],/*
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }]
+  }]*/
 })
 export class AuthModule {}
 

@@ -7,6 +7,7 @@ const routes: Routes = [
   // Login and Register
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },  // Cuando inicia redireccionar a esta página
 ];
 
 @NgModule({

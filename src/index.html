@@ -2,50 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>CONTECT</title>
+  <title>CONTECT V5</title>
   <base href="/">
+
+  <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-  <!--  Login with GOOGLE-->
-  <meta name="google-signin-client_id" content="740667955534-egpq3ic1rk3db6l25n09u1tbl2a6cb8n.apps.googleusercontent.com">
-
+  <meta name="description" content="">
+  <meta name="author" content="">
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.png">
-  <title>Admin Pro Admin Template - The Ultimate Bootstrap 4 Admin Template</title>
-
   <!-- Bootstrap Core CSS -->
   <link href="./assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom CSS -->
   <link href="./assets/css/style.css" rel="stylesheet">
   <!-- You can change the theme colors from here -->
-  <link  id="theme" rel="stylesheet">
+  <link id="theme" rel="stylesheet">
+  <!-- page css -->
+  <link href="./assets/css/pages/login-register-lock.css" rel="stylesheet">
 
 </head>
 
 <body class="fix-header card-no-border fix-sidebar">
-
-<!--Script GOOGLE-->
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<script>
-  function onSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log('Token: ' + id_token);
-  }
-
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-</script>
 
 <!-- ============================================================== -->
 <!-- Preloader - style you can find in spinners.css -->
@@ -76,7 +53,7 @@
 <script src="./assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
 <script src="./assets/plugins/sparkline/jquery.sparkline.min.js"></script>
 <!--Custom JavaScript -->
-<script src="./assets/js/custom.min.js"></script>
+<script src="./assets/js/custom.js"></script>
 <!-- ============================================================== -->
 <!-- End Jquery -->
 <!-- ============================================================== -->
