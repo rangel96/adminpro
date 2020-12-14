@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { UsuariosService } from '../../services/usuarios.service';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+
+import { UsuariosService } from '../../services/usuarios.service';
+import { MyValidation } from './register.validator';
 
 @Component({
   selector: 'app-register',
@@ -16,12 +18,16 @@ export class RegisterComponent {
   createFormGroup() {
     return new FormGroup(
       {
-        nombre: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required]),
+        nombre: new FormControl('', Validators.required),
+        email: new FormControl('', [Validators.required, Validators.email], []),
+        password: new FormControl('', Validators.required),
+        password2: new FormControl('', Validators.required),
+        terms: new FormControl(false, Validators.requiredTrue),
         imagen: new FormControl('https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png', Validators.required),
-        password2: new FormControl('', [Validators.required]),
-        terms: new FormControl(false, [Validators.requiredTrue]),
+      },
+      {
+        validators: MyValidation.ValidarPassword,
+        // asyncValidators: MyValidation.ValidarEmail
       }
     );
   }
@@ -40,25 +46,42 @@ export class RegisterComponent {
     this.router.navigateByUrl('/');
   }
 
-  addUser(newUser) {
-    this.usuariosSvc.addUser(newUser).subscribe((usuario) => {
-      if (usuario.status) {
+  //  ---------- VALIDADORES ---------- //
+  validarPassword(): boolean {
+    return this.newUserForm.hasError('noSonIguales') &&
+      this.newUserForm.get('password').dirty &&
+      this.newUserForm.get('password2').dirty;
+  }
+
+  validarEmail() {
+    return this.newUserForm.hasError('emailExiste') &&
+      this.newUserForm.get('email').dirty;
+  }
+
+
+  addUser() {
+    let newUser = this.newUserForm.value;
+    this.usuariosSvc.addUser(newUser).subscribe((usuarioAdded) => {
+      if (usuarioAdded.status) {
         // Mensaje de loging exitoso
         Swal.fire({
           icon: 'success',
-          title: usuario.msg,
+          title: usuarioAdded.msg,
           showConfirmButton: false,
-          timer: 1500
+          timer: 900
         });
+
+        // Almacenar los datos del usuario para el cambio entre paginas
+        this.usuariosSvc.usuario = usuarioAdded.data.usuario;
 
         // Limpiar formulario y cambiar de pagina
         this.onResetForm();
-      } else{
+      } else {
         // Mensaje de registro fallido
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: usuario.msg,
+          text: usuarioAdded.msg,
           showConfirmButton: false,
           timer: 2000
         });
@@ -67,68 +90,5 @@ export class RegisterComponent {
 
   }
 
-  validarPassword() {
-    // Get all form
-    const newUser = this.newUserForm.value;
-
-    // Optenemos los valores de los campos de contraseñas
-    const pass1 = newUser.password;
-    const pass2 = newUser.password2;
-
-    // Verificamos si las constraseñas no coinciden
-    if (pass1 != pass2) {
-
-      // Si las constraseñas no coinciden mostramos un mensaje
-      Swal.fire({
-        icon: 'warning',
-        title: 'Oops...',
-        text: 'Las contraseñas no coinciden',
-        showConfirmButton: false,
-        timer: 2000
-      });
-
-    } else {
-      this.addUser(newUser);
-    }
-
-
-  }
-
 }
-
-/*
-validarPassword() {
-  // Get all form
-  const newUser = this.userForm.value;
-
-  // Optenemos los valores de los campos de contraseñas
-  const pass1 = newUser.password;
-  const pass2 = newUser.password2;
-
-  // Verificamos si las constraseñas no coinciden
-  if (pass1 != pass2) {
-
-    // Si las constraseñas no coinciden mostramos un mensaje
-    document.getElementById('error').classList.add('mostrar');
-
-    return false;
-  } else {
-
-    // Si las contraseñas coinciden ocultamos el mensaje de error
-    document.getElementById('error').classList.remove('mostrar');
-
-    // Mostramos un mensaje mencionando que las Contraseñas coinciden
-    document.getElementById('ok').classList.remove('ocultar');
-
-    console.log(newUser);
-
-    // Refrescamos la página (Simulación de envío del formulario)
-    setTimeout(function() {
-      location.reload();
-    }, 3000);
-
-    return true;
-  }
-}
-*/
 

@@ -7,6 +7,7 @@ import { NopagesfoundComponent } from './nopagesfound/nopagesfound.component';
 import { AppComponent } from './app.component';
 
 // Routing - Rutas de los diferentes componentes
+// import { AppRoutingModule } from './app-routing.module';
 import { APP_ROUTING } from './app-routing.module';
 import { PagesRoutingModule } from './pages/pages.routing';
 import { AuthRoutingModule } from './auth/auth.routing';
@@ -26,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     HttpClientModule,
     APP_ROUTING,
+    // AppRoutingModule,
     PagesRoutingModule,
     AuthRoutingModule,
     PagesModule,

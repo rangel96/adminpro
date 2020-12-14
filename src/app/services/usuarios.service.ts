@@ -2,55 +2,59 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { UsuarioI, UsuarioTokenI } from '../interfaces/usuarios';
-import { Observable } from 'rxjs';
-import { TokenStoreService } from './security/token-store.service';
+import { Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { AbstractControl } from '@angular/forms';
+import { map, tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuariosService {
-  private urlAPI = 'http://localhost:3000/api/';
+  // Informacion que viaja entre paginas
+  urlAPI = environment.base_url;
+  usuario: UsuarioI; // Perfil del usuario logueado
+  // editUsuario: UsuarioI; // Perfil del usuario a editar
 
-  constructor(private http: HttpClient, private tokenSvc: TokenStoreService) {
+
+  constructor(private http: HttpClient,) {
   }
 
   // GetAll Obtener todos los usuarios
-  getAllUsers(): Observable<UsuarioI[]> {
-    const path = this.urlAPI + 'usuarios/';
-    return this.http.get<UsuarioI[]>(path);
+  getAllUsers(): Observable<UsuarioTokenI> {
+    const path = `${this.urlAPI}usuarios`;
+    return this.http.get<UsuarioTokenI>(path);
   }
 
   // GetbyID Obtener un usuario
-  getUser(idUser: number): Observable<UsuarioI> {
-    const path = this.urlAPI + 'usuarios/' + idUser;
-    return this.http.get<UsuarioI>(path);
+  getUserId(idUser: number): Observable<UsuarioTokenI> {
+    const path = `${this.urlAPI}usuarios/id/${idUser}`;
+    return this.http.get<UsuarioTokenI>(path);
   }
 
-  // CreateUser Agregar un usuario DUDA****************************
+  // GetbyEmail Obtener un usuario
+  getUserEmail(email: AbstractControl) {
+    const path = `${this.urlAPI}auth/reset`;
+    return this.http.post(path, { email }); // Sera GET o sera PUT??, con GET marca error :/
+  }
+
+  // CreateUser Agregar un usuario
   addUser(newUser: UsuarioI): Observable<UsuarioTokenI> {
-    const path = this.urlAPI + 'usuarios/';
+    const path = `${this.urlAPI}usuarios`;
     return this.http.post<UsuarioTokenI>(path, newUser);
   }
 
-  // UpdateUser Editar usuario DUDA****************************
-  updateUser(user: UsuarioI): Observable<UsuarioI[]> {
-    const path = this.urlAPI + 'usuarios/' + user.idUsuario;
-    return this.http.put<UsuarioI[]>(path, user);
+  // UpdateUser Editar usuario
+  updateUser(user: UsuarioI): Observable<UsuarioTokenI> {
+    const path = `${this.urlAPI}usuarios/${user.idUsuario}`;
+    return this.http.put<UsuarioTokenI>(path, user);
   }
 
   // DeleteUser Elimina el usuario
-  deleteUser(idUser: number): Observable<{}> {
+  deleteUser(idUser: number): Observable<UsuarioTokenI> {
     const path = `${this.urlAPI}usuarios/${idUser}`;
-    return this.http.delete(path);
+    return this.http.delete<UsuarioTokenI>(path);
   }
-
-  // Login native with token
-  /*login(userLogin: AuthLocalI) {
-    const path = `${this.urlAPI}auth/login`;
-    this.http.post<any>(path, userLogin).subscribe(res => {
-      this.tokenSvc.dispatch(res.token);
-    });
-  }*/
 
   // Login native
   login(userLogin: UsuarioI): Observable<UsuarioTokenI> {
@@ -60,9 +64,32 @@ export class UsuariosService {
 
   // Login Google
   // tslint:disable-next-line:typedef
-  /*googleLogin(token: AuthGoogleI) {
+  googleLogin(token) {
     const path = `${this.urlAPI}auth/google`;
-    return this.http.post(path, token);
-  }*/
+    return this.http.post(path, { token }).pipe(tap((value: any) => {
+        if (value.status) {
+          localStorage.setItem('token', value.data);
+        }
+      }),
+    );
+  }
+
+  validarToken(): Observable<boolean> {
+    const token = localStorage.getItem('token') || '';
+    const path = `${this.urlAPI}auth/token`;
+    return this.http.post(path, null ,{ headers: { 'x-token': token } }).pipe(
+      tap((resp: any) => {
+        localStorage.setItem('token', resp.data.token);
+      }),
+      map((resp: any) => {
+        if (resp.status) {
+          return true;
+        } else {
+          return false;
+        }
+      }),
+      catchError((error) => of(false))
+    );
+  }
 
 }

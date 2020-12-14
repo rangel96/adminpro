@@ -6,6 +6,7 @@ import { AuthRoutingModule } from './auth/auth.routing';
 
 
 const APP_ROUTES: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: NopagesfoundComponent },
   // { path: '**', pathMatch: 'full', redirectTo: 'nopagefound' } // Cuando no encuentra algo se redirecciona al Home
 ];

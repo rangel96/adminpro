@@ -1,5 +1,5 @@
 // Interface Usuario
-export interface UsuarioI {
+export class UsuarioI {
   idUsuario?: number;
   nombre?: string;
   email: string;

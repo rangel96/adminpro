@@ -1,0 +1,153 @@
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<!-- Row -->
+<div class="row">
+  <!-- Column -->
+  <div class="col-lg-4 col-xlg-3 col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <div class="m-t-30"><img src="" class="img-circle" width="150"/>
+          <h4 class="card-title m-t-10">Hanna Gover</h4>
+        </div>
+      </div>
+      <div>
+        <hr>
+      </div>
+      <div class="card-body">
+        <small class="text-muted">Email address </small>
+        <h6>andreas@lol.com</h6>
+        <small class="text-muted p-t-30 db">Phone</small>
+        <h6>+91 654 784 547</h6>
+        <small class="text-muted p-t-30 db">Address</small>
+        <h6>71 Pilgrim Avenue Chevy Chase, MD 20815</h6>
+        <small class="text-muted p-t-30 db">Social Profile</small>
+        <br/>
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-facebook"></i></button>&nbsp;
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-twitter"></i></button>&nbsp;
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-youtube"></i></button>&nbsp;
+      </div>
+    </div>
+  </div>
+  <!-- Column -->
+  <!-- Column -->
+  <div class="col-lg-8 col-xlg-9 col-md-7">
+    <div class="card">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs profile-tab" role="tablist">
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a></li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <!--first tab-->
+        <div class="tab-pane" id="profile" role="tabpanel">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r"><strong>Full Name</strong>
+                <br>
+                <p class="text-muted">Johnathan Deo</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"><strong>Mobile</strong>
+                <br>
+                <p class="text-muted">(123) 456 7890</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"><strong>Email</strong>
+                <br>
+                <p class="text-muted">johnathan@admin.com</p>
+              </div>
+              <div class="col-md-3 col-xs-6"><strong>Location</strong>
+                <br>
+                <p class="text-muted">London</p>
+              </div>
+            </div>
+            <hr>
+            <p class="m-t-30">
+              Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus
+              ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer
+              tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo
+              ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+            </p>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+              industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+              scrambled it to make a type specimen book. It has survived not only five centuries.
+            </p>
+            <p>
+              It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
+              more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+            <h4 class="font-medium m-t-30">Options</h4>
+            <hr>
+            <h5 class="m-t-30">Editar <span class="pull-right">80%</span></h5>
+            <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar" aria-valuenow="80" aria-valuemin="0"
+                   aria-valuemax="100" style="width:80%; height:6px;"><span class="sr-only">50% Complete</span>
+              </div>
+            </div>
+            <h5 class="m-t-30">Eliniar <span class="pull-right">90%</span></h5>
+            <div class="progress">
+              <div class="progress-bar bg-info" role="progressbar" aria-valuenow="90" aria-valuemin="0"
+                   aria-valuemax="100" style="width:90%; height:6px;"><span class="sr-only">50% Complete</span></div>
+              <!--</div>
+              <h5 class="m-t-30">jQuery <span class="pull-right">50%</span></h5>
+              <div class="progress">
+                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0"
+                     aria-valuemax="100" style="width:50%; height:6px;"><span class="sr-only">50% Complete</span></div>
+              </div>
+              <h5 class="m-t-30">Photoshop <span class="pull-right">70%</span></h5>
+              <div class="progress">
+                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                     aria-valuemax="100" style="width:70%; height:6px;"><span class="sr-only">50% Complete</span></div>-->
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane active" id="settings" role="tabpanel" [formGroup]="editUserForm">
+          <div class="card-body">
+            <form class="form-horizontal form-material">
+              <div class="form-group">
+                <label class="col-md-12">Name</label>
+                <div class="col-md-12">
+                  <input type="text" placeholder="" class="form-control form-control-line" formControlName="nombre">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-12">Email</label>
+                <div class="col-md-12">
+                  <input type="email" placeholder="" class="form-control form-control-line" formControlName="email">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-12">Password</label>
+                <div class="col-md-12">
+                  <input type="password" class="form-control form-control-line" formControlName="password">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-12">Confirm Password</label>
+                <div class="col-md-12">
+                  <input type="password" class="form-control form-control-line" formControlName="password2">
+                  <div [class.alert-danger] text-danger *ngIf="validarPassword()"><p> Password no coinciden</div>
+                </div>
+              </div>
+              <div class="form-group" class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4">
+                  <button class="btn btn-instagram"><i class="fa fa-pencil fa-lg"></i>&nbsp;&nbsp; Update Profile</button>
+                </div>
+                <div class="col-sm-4">
+                  <button class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i>&nbsp;&nbsp; Delete Profile</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Column -->
+</div>
+<!-- Row -->
+<!-- ============================================================== -->
+<!-- End PAge Content -->
+<!-- ============================================================== -->
