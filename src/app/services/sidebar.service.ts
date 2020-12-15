@@ -14,7 +14,7 @@ export class SidebarService {
       titulo: 'Pages',
       icono: 'mdi mdi-guage',
       submenu: [
-        { titulo: 'Main', url: '/' },
+        { titulo: 'Main', url: '/dashboard' },
         { titulo: 'ProgressBar', url: '/progress' },
         { titulo: 'Graphics', url: '/graphic1' },
         { titulo: 'Promesas', url: '/promesas' },

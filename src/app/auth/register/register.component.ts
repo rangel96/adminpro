@@ -34,6 +34,7 @@ export class RegisterComponent {
 
   newUserForm: FormGroup;
 
+  //  ---------- VALIDADORES ---------- //
   constructor(private usuariosSvc: UsuariosService, private router: Router) {
     this.newUserForm = this.createFormGroup();
   }
