@@ -6,6 +6,8 @@ import { UsuariosService } from '../../services/usuarios.service';
 import { UsuarioI, UsuarioTokenI } from '../../interfaces/usuarios';
 import { environment } from '../../../environments/environment';
 
+declare const gapi: any;
+
 @Component({
   selector: 'userForm',
   // selector: 'app-login',
@@ -13,6 +15,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['/src/assets/css/pages/login-register-lock.css']
   // styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
 
 
@@ -25,9 +28,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ///  ---------- VARIABLES ---------- //
+  //  ---------- VARIABLES ---------- //
   userForm: FormGroup;
-  gapi: any;
   auth2;
 
 
@@ -38,7 +40,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-        // this.renderButton();
+        this.renderButton();
     }
 
 //  ---------- MÉTODOS ---------- //
@@ -53,12 +55,9 @@ export class LoginComponent implements OnInit {
 
   //  ---------- VALIDADORES ---------- //
   validarEmail(email){
-
     this.usuariosSvc.getUserEmail(email).subscribe((value: any) => {
-
       if (value.status){
-        console.log(value);
-        this.usuariosSvc.usuario = value.data;
+        this.usuariosSvc.usuario = value.data.usuario;
         this.router.navigateByUrl('/reset');
       }
       else {
@@ -108,7 +107,6 @@ export class LoginComponent implements OnInit {
         Swal.fire({
           icon: 'success',
           title: authResponse.msg,
-          confirmButtonText: 'entra',
           showConfirmButton: false,
           timer: 700
         });
@@ -159,6 +157,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
+
   // Recuperar password
   forgotPassword() {
     // Cambiamos de pagina
@@ -181,26 +180,16 @@ export class LoginComponent implements OnInit {
 
   }
 
-  renderButton() {
-    this.gapi.signin2.render('my-signin2', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': true,
-      'theme': 'dark',
-    });
-    this.startApp();
-  }
 
+  // Validar el token de GOOGLE
   attachSignin(element) {
-    this.auth2.attachClickHandler(element, {},
-      (googleUser) => {
+    this.auth2.attachClickHandler(element, {}, (googleUser) => {
         const id_token = googleUser.getAuthResponse().id_token;
-        console.log(googleUser.getBasicProfile());
-        const cu = googleUser.getBasicProfile().cu;
+        console.log(id_token);
+        const email = googleUser.getBasicProfile().du;
         this.usuariosSvc.googleLogin(id_token).subscribe((usutoken: any)=>{
           if (usutoken.status) {
-            localStorage.setItem('email', cu);
+            localStorage.setItem('email', email);
             Swal.fire({
               title: 'Exito!',
               text: usutoken.message,
@@ -227,10 +216,12 @@ export class LoginComponent implements OnInit {
       });
   }
 
+
+  // La neta no me acuerdo
   startApp() {
-    this.gapi.load('auth2', () =>{
+    gapi.load('auth2', () =>{
       // Retrieve the singleton for the GoogleAuth library and set up the client.
-      this.auth2 = this.gapi.auth2.init({
+      this.auth2 = gapi.auth2.init({
         client_id: environment.GOOGLE_CLIENT_ID,
         cookiepolicy: 'single_host_origin',
         // Request scopes in addition to 'profile' and 'email'
@@ -241,49 +232,16 @@ export class LoginComponent implements OnInit {
   };
 
 
+  // Rendereizar el boton de GOOGLE
+  renderButton() {
+    gapi.signin2.render('my-signin2', {
+      'scope': 'profile email',
+      'width': 240,
+      'height': 50,
+      'longtitle': true,
+      'theme': 'dark',
+    });
+    this.startApp();
+  }
 
 }
-
-/*
-// Recuperar password
-  forgotPassword() {
-    // Cambiamos de pagina
-    // this.router.navigateByUrl('/forgotpassword');
-    Swal.fire({ // inicio swal.fire
-      title: 'Forgot password?',
-      text: ' Ingresa el email... ',
-      input: 'text', // Cambiar a email
-      inputPlaceholder: 'Enter your email address',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Confirm',
-      showLoaderOnConfirm: true,
-      preConfirm: (login) => {
-        return fetch(`//api.github.com/users/${login}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(response.statusText);
-            }
-            return response.json();
-          })
-          .catch(error => {
-            Swal.showValidationMessage(
-              `Email invalid: ${error}`
-            );
-          });
-      },
-      allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          icon: 'success',
-          title: `${result.value.login}'s avatar`,
-          imageUrl: result.value.avatar_url
-        });
-      }
-    });// fin swal.fire
-
-  }
-*/

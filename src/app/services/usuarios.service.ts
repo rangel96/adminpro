@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AbstractControl } from '@angular/forms';
 import { map, tap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class UsuariosService {
   // editUsuario: UsuarioI; // Perfil del usuario a editar
 
 
-  constructor(private http: HttpClient,) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   // GetAll Obtener todos los usuarios
@@ -68,7 +69,8 @@ export class UsuariosService {
     const path = `${this.urlAPI}auth/google`;
     return this.http.post(path, { token }).pipe(tap((value: any) => {
         if (value.status) {
-          localStorage.setItem('token', value.data);
+          this.usuario = value.data.usuario;
+          localStorage.setItem('token', value.data.token);
         }
       }),
     );
