@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
   //  ---------- PROPIEDADES EL FORMS ---------- //
   createFormGroupo() {
     return new FormGroup({
-      email: new FormControl(localStorage.getItem('email') || 'admin@lol.com', [Validators.required, Validators.email]),
-      password: new FormControl('admi', [Validators.required]),
+      email: new FormControl(localStorage.getItem('email') || '', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required]),
       rememberMe: new FormControl(false),
     });
   }
