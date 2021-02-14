@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
   //  ---------- PROPIEDADES EL FORMS ---------- //
   createFormGroupo() {
     return new FormGroup({
-      email: new FormControl(localStorage.getItem('email') || '', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
+      email: new FormControl(localStorage.getItem('email') || 'admin@lol.com', [Validators.required, Validators.email]),
+      password: new FormControl('admin', [Validators.required]),
       rememberMe: new FormControl(false),
     });
   }
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-        this.renderButton();
-    }
+    this.renderButton();
+  }
 
 //  ---------- MÉTODOS ---------- //
   onResetForm() {
@@ -54,17 +54,16 @@ export class LoginComponent implements OnInit {
 
 
   //  ---------- VALIDADORES ---------- //
-  validarEmail(email){
+  validarEmail(email) {
     this.usuariosSvc.getUserEmail(email).subscribe((value: any) => {
-      if (value.status){
+      if (value.status) {
         this.usuariosSvc.usuario = value.data.usuario;
         this.router.navigateByUrl('/reset');
-      }
-      else {
+      } else {
         // Mensaje de error, preguntar si quiere intentarlo de nuevo
         Swal.fire({
           title: value.msg,
-          text: "Try again?",
+          text: 'Try again?',
           icon: 'error',
           showCancelButton: true,
           cancelButtonText: 'No, thanks!',
@@ -184,42 +183,42 @@ export class LoginComponent implements OnInit {
   // Validar el token de GOOGLE
   attachSignin(element) {
     this.auth2.attachClickHandler(element, {}, (googleUser) => {
-        const id_token = googleUser.getAuthResponse().id_token;
-        console.log(id_token);
-        const email = googleUser.getBasicProfile().du;
-        this.usuariosSvc.googleLogin(id_token).subscribe((usutoken: any)=>{
-          if (usutoken.status) {
-            localStorage.setItem('email', email);
-            Swal.fire({
-              title: 'Exito!',
-              text: usutoken.message,
-              icon: 'success',
-              confirmButtonText: 'Ok',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.router.navigateByUrl('/');
-              }
-            });
-          } else {
-            Swal.fire({
-              title: 'Error!',
-              text: usutoken.message,
-              icon: 'error',
-              confirmButtonText: 'Ok',
-            });
-          }
-        } )
-
-
-      }, (error) =>{
-        alert(JSON.stringify(error, undefined, 2));
+      const id_token = googleUser.getAuthResponse().id_token;
+      console.log(id_token);
+      const email = googleUser.getBasicProfile().du;
+      this.usuariosSvc.googleLogin(id_token).subscribe((usutoken: any) => {
+        if (usutoken.status) {
+          localStorage.setItem('email', email);
+          Swal.fire({
+            title: 'Exito!',
+            text: usutoken.message,
+            icon: 'success',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigateByUrl('/');
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: usutoken.message,
+            icon: 'error',
+            confirmButtonText: 'Ok',
+          });
+        }
       });
+
+
+    }, (error) => {
+      alert(JSON.stringify(error, undefined, 2));
+    });
   }
 
 
   // La neta no me acuerdo
   startApp() {
-    gapi.load('auth2', () =>{
+    gapi.load('auth2', () => {
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       this.auth2 = gapi.auth2.init({
         client_id: environment.GOOGLE_CLIENT_ID,
@@ -242,6 +241,44 @@ export class LoginComponent implements OnInit {
       'theme': 'dark',
     });
     this.startApp();
+  }
+
+  resetPassword() {
+    Swal.mixin({
+      // input: 'text',
+      confirmButtonText: 'Next &rarr;',
+      showCancelButton: true,
+      progressSteps: ['1', '2', '3']
+    }).queue([
+      {
+        title: 'Question 1',
+        text: 'Chaining swal2 modals is easy',
+        html: '<input id="email" class="swal2-input">',
+      },
+      {
+        title: 'Question 2',
+        text: 'Chaining swal2 modals is easy',
+        html: '<input id="password" class="swal2-input">',
+      },
+      {
+        title: 'Question 3',
+        text: 'Chaining swal2 modals is easy',
+        html: '<input id="password2" class="swal2-input">',
+      },
+    ]).then((result: any) => {
+      if (result.value) {
+        const answers = JSON.stringify(result.value);
+        Swal.fire({
+          title: 'All done!',
+          html:
+            `
+        Your answers:
+        <pre><code>${answers}</code></pre>
+      `,
+          confirmButtonText: 'Lovely!'
+        });
+      }
+    });
   }
 
 }

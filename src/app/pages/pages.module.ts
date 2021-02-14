@@ -24,10 +24,10 @@ import { UsuarioComponent } from '../components/usuario/usuario.component';
 
 @NgModule({
   declarations: [
+    PagesComponent,
     DashboardComponent,
     ProgressComponent,
     Graphic1Component,
-    PagesComponent,
     IncrementalComponent,
     AccountSettingsComponent,
     PromesasComponent,
@@ -37,10 +37,10 @@ import { UsuarioComponent } from '../components/usuario/usuario.component';
     UsuarioComponent
   ],
   exports: [
+    PagesComponent,
     DashboardComponent,
     ProgressComponent,
     Graphic1Component,
-    PagesComponent,
     AccountSettingsComponent
   ],
     imports: [

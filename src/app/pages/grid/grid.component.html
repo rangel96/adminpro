@@ -11,7 +11,7 @@
           <th>Foto de perfil</th>
           <th>Nombre</th>
           <th>Email</th>
-          <th>Activo</th>
+          <th>Acciones</th>
         </tr>
         </thead>
         <tfoot>
@@ -19,7 +19,7 @@
           <th>Foto de perfil</th>
           <th>Nombre</th>
           <th>Email</th>
-          <th>Activo</th>
+          <th>Acciones</th>
         </tr>
         </tfoot>
         <tbody>
@@ -27,8 +27,6 @@
           <td><img [src]="i.imagen" alt="user" class="profile-pic" [height]="100" [width]="100"/></td>
           <td>{{i.nombre}}</td>
           <td>{{i.email}}</td>
-          <td *ngIf="i.activo"><i class="fa fa-check-circle"></i></td>
-          <td *ngIf="!i.activo"><i class="fa fa-times-circle"></i></td>
           <td (click)="getUser(i.idUsuario)"><div class="btn btn-instagram"><i class="fa fa-pencil fa-lg"></i>&nbsp;&nbsp; Edit</div></td>
           <td (click)="eliminarUsuario(i.idUsuario)"><div class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i>&nbsp;&nbsp; Delete</div></td>
         </tr>

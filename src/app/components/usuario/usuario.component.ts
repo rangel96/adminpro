@@ -38,22 +38,8 @@ export class UsuarioComponent implements OnInit {
   ///  ---------- CONSTRUCTOR ---------- //
   constructor(private usuarioSvc: UsuariosService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.editUserForm = this.createFormGroup();
-
-    this.activatedRoute.params.subscribe((params) => {// Obtener el id de la URL INICIO
-
-      this.usuarioSvc.getUserId(params['id']).subscribe((user:any) => {// Buscar el usuario por id INICIO
-             if (user.status) {
-               this.usuario = user.data;
-               console.log('usuario buscado por el id en params');
-               console.log(this.usuario);
-             } else {
-               // Mandar mensaje de error y regresar a la pagina anterior
-             }
-           });
-
-    });// Buscar el usuario por id FIN
-
-  }// Obtener el id de la URL FIN
+    this.loadData();
+  }
 
   ngOnInit(): void {
   }
@@ -70,10 +56,17 @@ export class UsuarioComponent implements OnInit {
 
   //  ---------- MÉTODOS ---------- //
 
-  getImagen() {
-    const imagenNueva = this.editUserForm.get('imagen').value;
-    console.log(imagenNueva);
-    return imagenNueva;
+  loadData() {
+    this.activatedRoute.params.subscribe((params) => {// Obtener el id de la URL INICIO
+      this.usuarioSvc.getUserId(params['id']).subscribe((user:any) => {// Buscar el usuario por id INICIO
+        if (user.status) {
+          this.usuario = user.data;
+          console.log(this.usuario);
+        } else {
+          // Mandar mensaje de error y regresar a la pagina anterior
+        }
+      });
+    });// Buscar el usuario por id FIN
   }
 
   cancelar() {
@@ -82,46 +75,11 @@ export class UsuarioComponent implements OnInit {
 
   //  ---------- MÉTODOS SERVICE ---------- //
   editarUsuario() {
-    console.log(this.editUserForm.value);
-    /*
-    this.usuarioSvc.updateUser(usuario).subscribe((res) => {
-      if (res.status) {
 
-
-      } else {
-
-      }
-    });
-    */
   }
 
   eliminarUsuario() {
-    console.log(this.editUserForm.value);
-    /*
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    })
-    .then((result) => {
-      if (result.isConfirmed) {
-        this.usuarioSvc.deleteUser(this.usuario.idUsuario).subscribe((res) => {
-      if (res.status) {
 
-      }
-      else {
-
-      }
-      }
-
-
-
-    });
-    */
   }
 
 }

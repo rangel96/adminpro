@@ -24,11 +24,11 @@ export class GridComponent implements OnInit {
 
   getAllUsers() {
     this.usuariosSvc.getAllUsers().subscribe((result: any) => {
-      console.log(result);
       if (result.status) {
         this.users = result.data.usuario;
         this.title = result.msg;
-      } else {
+      }
+      else {
         // Mensaje de fallido
         Swal.fire({
           icon: 'warning',
@@ -37,6 +37,7 @@ export class GridComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000
         });
+        this.router.navigateByUrl('/login');
       }
     });
   }
@@ -44,10 +45,9 @@ export class GridComponent implements OnInit {
   getUser(id: number) {
     this.usuariosSvc.getUserId(id).subscribe((usuarioResult: any) => {
       if (usuarioResult.status) {
-        console.log('Editar usuario: ' + id);
-        // this.usuariosSvc.editUsuario = usuarioResult;
         this.router.navigate(['/usuario', id]);
-      } else {
+      }
+      else {
         // Mensaje de fallido
         Swal.fire({
           icon: 'warning',
@@ -85,7 +85,8 @@ export class GridComponent implements OnInit {
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: 'Something went wrong! Try again.',
+              text: `Something went wrong! Try again.
+                      Or server error`,
               showConfirmButton: false,
               timer: 700
             });
